@@ -32,124 +32,94 @@ st.markdown("""
 }
 
 .stApp {
-    background-color: var(--bg-black);
+    background:
+        linear-gradient(rgba(0,245,212,0.025) 1px, transparent 1px) 0 0 / 100% 34px,
+        linear-gradient(90deg, rgba(0,245,212,0.02) 1px, transparent 1px) 0 0 / 34px 100%,
+        var(--bg-black);
     color: #E8E8ED;
 }
-.block-container {
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
-    max-width: 1500px;
-}
+.block-container { padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1500px; }
 #MainMenu, footer, header[data-testid="stHeader"] { visibility: hidden; height: 0; }
 
 html, body, [class*="css"] { font-family: 'IBM Plex Sans', sans-serif; color: #E8E8ED; }
-h1, h2, h3, h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #FFFFFF; }
+h1, h2, h3, h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.03em; color: #FFFFFF; }
 p, span, label, .stMarkdown { color: #C7C7D1; }
 
 /* Hero */
-.hero-wrap {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 24px;
-    padding: 30px 36px;
-    border: 1px solid #23232E;
-    border-radius: 14px;
-    background: radial-gradient(circle at top left, rgba(0,245,212,0.06), transparent 60%),
-                radial-gradient(circle at bottom right, rgba(176,38,255,0.08), transparent 60%),
-                var(--bg-panel);
-    margin-bottom: 28px;
+.hero-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--neon-cyan);
+    border: 1px solid var(--neon-cyan); border-radius: 20px; padding: 5px 14px;
+    display: inline-block; margin-bottom: 14px; box-shadow: 0 0 12px rgba(0,245,212,0.25);
 }
 .hero-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 46px;
-    line-height: 1.05;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    text-shadow: 0 0 18px rgba(0,245,212,0.35);
-    margin: 0;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
+    text-transform: uppercase; color: #FFFFFF; text-shadow: 0 0 18px rgba(0,245,212,0.3); margin: 0;
 }
 .hero-title .accent { color: var(--neon-cyan); }
-.hero-sub {
-    font-size: 15px;
-    color: #9A9AA6;
-    max-width: 520px;
-    margin-top: 10px;
-    line-height: 1.5;
+.hero-sub { font-size: 14.5px; color: #9A9AA6; max-width: 520px; margin-top: 12px; line-height: 1.55; }
+
+/* Tabs styled like a terminal nav */
+button[data-baseweb="tab"] {
+    font-family: 'IBM Plex Mono', monospace !important;
+    font-size: 12.5px !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #8C8C99 !important;
+    padding: 10px 4px !important;
 }
-.hero-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    border: 1px solid var(--neon-cyan);
-    border-radius: 20px;
-    padding: 5px 14px;
-    display: inline-block;
-    margin-bottom: 14px;
-    box-shadow: 0 0 12px rgba(0,245,212,0.25);
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: var(--neon-cyan) !important;
+    text-shadow: 0 0 10px rgba(0,245,212,0.5);
 }
+div[data-baseweb="tab-highlight"] { background-color: var(--neon-cyan) !important; box-shadow: 0 0 8px rgba(0,245,212,0.6); }
+div[data-baseweb="tab-border"] { background-color: #1E1E28 !important; }
 
-/* Generic glow panel */
-.glow-panel {
-    background: var(--bg-panel);
-    border-radius: 14px;
-    padding: 22px 24px;
-    border: 1px solid #23232E;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-    height: 100%;
+/* Keyed neon panels (real Streamlit containers, not floating divs) */
+div[class*="st-key-panel-"] {
+    border-radius: 14px !important;
+    padding: 6px 6px !important;
+    background: var(--bg-panel) !important;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.glow-panel:hover { transform: translateY(-3px) scale(1.012); }
-
-.glow-cyan { border-color: rgba(0,245,212,0.35); box-shadow: 0 0 16px rgba(0,245,212,0.08); }
-.glow-cyan:hover { border-color: var(--neon-cyan); box-shadow: 0 0 26px rgba(0,245,212,0.35); }
-
-.glow-purple { border-color: rgba(176,38,255,0.35); box-shadow: 0 0 16px rgba(176,38,255,0.08); }
-.glow-purple:hover { border-color: var(--neon-purple); box-shadow: 0 0 26px rgba(176,38,255,0.35); }
-
-.glow-pink { border-color: rgba(255,46,154,0.35); box-shadow: 0 0 16px rgba(255,46,154,0.08); }
-.glow-pink:hover { border-color: var(--neon-pink); box-shadow: 0 0 26px rgba(255,46,154,0.35); }
+.st-key-panel-cyan { border: 1px solid rgba(0,245,212,0.35) !important; box-shadow: 0 0 18px rgba(0,245,212,0.08) !important; }
+.st-key-panel-cyan:hover { border-color: var(--neon-cyan) !important; box-shadow: 0 0 30px rgba(0,245,212,0.3) !important; }
+.st-key-panel-purple { border: 1px solid rgba(176,38,255,0.35) !important; box-shadow: 0 0 18px rgba(176,38,255,0.08) !important; }
+.st-key-panel-purple:hover { border-color: var(--neon-purple) !important; box-shadow: 0 0 30px rgba(176,38,255,0.3) !important; }
+.st-key-panel-yellow { border: 1px solid rgba(245,255,0,0.3) !important; box-shadow: 0 0 18px rgba(245,255,0,0.07) !important; }
+.st-key-panel-yellow:hover { border-color: var(--neon-yellow) !important; box-shadow: 0 0 30px rgba(245,255,0,0.25) !important; }
+.st-key-panel-pink { border: 1px solid rgba(255,46,154,0.3) !important; box-shadow: 0 0 18px rgba(255,46,154,0.07) !important; }
+.st-key-panel-pink:hover { border-color: var(--neon-pink) !important; box-shadow: 0 0 30px rgba(255,46,154,0.25) !important; }
 
 .panel-heading {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 14px;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 21px;
+    text-transform: uppercase; letter-spacing: 0.04em; margin: 10px 0 16px 4px;
 }
+.panel-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6E6E7A;
+    letter-spacing: 0.06em; text-transform: uppercase; margin: -10px 0 16px 4px; }
 
 /* Term cards */
 .term-card {
-    background: #0B0B12;
-    border: 1px solid #24242E;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
+    background: #0B0B12; border: 1px solid #24242E; border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 14px;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.term-card:hover { transform: scale(1.035); }
+.term-card:hover { transform: scale(1.03); }
 .term-card.good { border-color: rgba(0,245,212,0.4); box-shadow: 0 0 10px rgba(0,245,212,0.12); }
-.term-card.good:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,245,212,0.4); }
+.term-card.good:hover { border-color: var(--neon-cyan); box-shadow: 0 0 22px rgba(0,245,212,0.4); }
 .term-card.bad { border-color: rgba(255,59,92,0.45); box-shadow: 0 0 10px rgba(255,59,92,0.14); }
-.term-card.bad:hover { border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255,59,92,0.45); }
+.term-card.bad:hover { border-color: var(--neon-red); box-shadow: 0 0 22px rgba(255,59,92,0.45); }
 .term-card .tc-label {
     font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: #8C8C99; margin-bottom: 6px;
+    text-transform: uppercase; color: #8C8C99; margin-bottom: 8px;
 }
-.term-card .tc-value { font-family: 'IBM Plex Mono', monospace; font-size: 21px; font-weight: 600; color: #FFFFFF; }
+.term-card .tc-value { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; color: #FFFFFF; }
 .term-card .tc-value.empty { color: #4A4A55; font-size: 14px; font-weight: 400; }
 
 /* Negotiation cards */
 .neg-card {
-    background: #12100A;
-    border: 1px solid rgba(245,255,0,0.3);
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    font-size: 14.5px;
-    line-height: 1.5;
-    color: #EDEDD8;
+    background: #12100A; border: 1px solid rgba(245,255,0,0.3); border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 14px; font-size: 15px; line-height: 1.55; color: #EDEDD8;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 .neg-card:hover { transform: scale(1.015); border-color: var(--neon-yellow); box-shadow: 0 0 18px rgba(245,255,0,0.25); }
@@ -157,50 +127,29 @@ p, span, label, .stMarkdown { color: #C7C7D1; }
 /* Vehicle card */
 .vehicle-card {
     background: linear-gradient(135deg, #12081D 0%, #1A0F26 100%);
-    border: 1px solid rgba(176,38,255,0.4);
-    border-radius: 12px;
-    padding: 20px 22px;
-    margin-bottom: 6px;
-    box-shadow: 0 0 16px rgba(176,38,255,0.12);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: 1px solid rgba(176,38,255,0.4); border-radius: 12px; padding: 24px 26px; margin-bottom: 18px;
+    box-shadow: 0 0 16px rgba(176,38,255,0.12); transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.vehicle-card:hover { transform: scale(1.015); box-shadow: 0 0 26px rgba(176,38,255,0.35); }
-.vehicle-card .vc-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 26px; text-transform: uppercase; color: #FFFFFF; }
-.vehicle-card .vc-vin { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B9A6D6; margin-top: 4px; }
+.vehicle-card:hover { transform: scale(1.01); box-shadow: 0 0 28px rgba(176,38,255,0.35); }
+.vehicle-card .vc-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 30px; text-transform: uppercase; color: #FFFFFF; }
+.vehicle-card .vc-vin { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #B9A6D6; margin-top: 6px; }
 
 /* Streamlit widget overrides */
-div[data-testid="stFileUploaderDropzone"] {
-    background: var(--bg-panel);
-    border-radius: 10px;
-    border: 1.5px dashed rgba(0,245,212,0.4);
-}
+div[data-testid="stFileUploaderDropzone"] { background: var(--bg-panel); border-radius: 10px; border: 1.5px dashed rgba(0,245,212,0.4); }
 div[data-testid="stButton"] button[kind="primary"] {
-    background: linear-gradient(90deg, #00F5D4, #00C2FF);
-    color: #07070B;
-    border: none;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    box-shadow: 0 0 16px rgba(0,245,212,0.35);
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    background: linear-gradient(90deg, #00F5D4, #00C2FF); color: #07070B; border: none;
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    box-shadow: 0 0 16px rgba(0,245,212,0.35); transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-div[data-testid="stButton"] button[kind="primary"]:hover {
-    box-shadow: 0 0 26px rgba(0,245,212,0.6);
-    transform: scale(1.02);
-}
+div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 26px rgba(0,245,212,0.6); transform: scale(1.02); }
 div[data-testid="stDownloadButton"] button {
-    background: var(--bg-panel);
-    border: 1px solid rgba(0,245,212,0.4);
-    color: #E8E8ED;
-    font-weight: 600;
+    background: var(--bg-panel); border: 1px solid rgba(0,245,212,0.4); color: #E8E8ED; font-weight: 600;
     transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
-div[data-testid="stDownloadButton"] button:hover {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 16px rgba(0,245,212,0.3);
-}
+div[data-testid="stDownloadButton"] button:hover { border-color: var(--neon-cyan); box-shadow: 0 0 16px rgba(0,245,212,0.3); }
 section[data-testid="stSidebar"] { background-color: #0B0B12; border-right: 1px solid #23232E; }
-details { background: #0B0B12; border: 1px solid #24242E; border-radius: 8px; padding: 6px 12px; margin-bottom: 8px; }
+details { background: #0B0B12; border: 1px solid #24242E; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; }
+summary { color: #E8E8ED !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -450,7 +399,7 @@ def render_fairness_gauge(score):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        number={'suffix': "/100", 'font': {'size': 34, 'family': 'IBM Plex Mono', 'color': '#FFFFFF'}},
+        number={'suffix': "/100", 'font': {'size': 40, 'family': 'IBM Plex Mono', 'color': '#FFFFFF'}},
         gauge={
             'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': '#4A4A55', 'tickfont': {'color': '#8C8C99'}},
             'bar': {'color': color, 'thickness': 0.28},
@@ -464,7 +413,7 @@ def render_fairness_gauge(score):
         }
     ))
     fig.update_layout(
-        height=230, margin=dict(l=20, r=20, t=20, b=10),
+        height=280, margin=dict(l=20, r=20, t=30, b=10),
         paper_bgcolor="rgba(0,0,0,0)", font={'color': '#E8E8ED'}
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -518,7 +467,7 @@ def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, re
 hero_left, hero_right = st.columns([2, 1])
 with hero_left:
     st.markdown("""
-    <div class="hero-badge">LLM-Powered Contract Review</div>
+    <div class="hero-badge">LLM-POWERED CONTRACT REVIEW</div>
     <div class="hero-title">Know the deal<br><span class="accent">before you sign.</span></div>
     <div class="hero-sub">Upload a lease or loan contract PDF. An LLM reads it, scores its fairness,
     decodes the vehicle, checks for open recalls, and tells you exactly what to negotiate.</div>
@@ -526,11 +475,10 @@ with hero_left:
 with hero_right:
     st.markdown("<br>", unsafe_allow_html=True)
     uploaded_file = st.file_uploader("Upload contract PDF", type=["pdf"], label_visibility="collapsed")
+    analyze_clicked = False
     if uploaded_file and API_KEY:
-        analyze_clicked = st.button("⚡ Analyze with AI", type="primary", use_container_width=True)
-    else:
-        analyze_clicked = False
-    if uploaded_file and not API_KEY:
+        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
+    elif uploaded_file and not API_KEY:
         st.warning("Add your Gemini API key in the sidebar first.")
 
 if uploaded_file and API_KEY and analyze_clicked:
@@ -559,89 +507,84 @@ if "fields" in st.session_state:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    row1_left, row1_mid, row1_right = st.columns([1.1, 1.7, 1.1])
+    tab_overview, tab_terms, tab_vehicle, tab_neg, tab_explain = st.tabs([
+        "📊 OVERVIEW", "💵 FINANCIAL TERMS", "🚙 VEHICLE & RECALLS", "🤝 NEGOTIATION", "📖 EXPLAINED"
+    ])
 
-    # ---- Fairness gauge (cyan) ----
-    with row1_left:
-        st.markdown('<div class="glow-panel glow-cyan">', unsafe_allow_html=True)
-        st.markdown(f'<div class="panel-heading">{emoji} Fairness Score</div>', unsafe_allow_html=True)
-        render_fairness_gauge(score)
-        st.markdown(f"**{label}**")
-        for check_label, pts, reason in checks[:4]:
-            st.caption(f"**{check_label}** — {reason}")
-        st.markdown('</div>', unsafe_allow_html=True)
+    with tab_overview:
+        with st.container(border=True, key="panel-fairness"):
+            st.markdown('<div class="panel-heading">Contract Fairness Score</div>', unsafe_allow_html=True)
+            gcol1, gcol2 = st.columns([1, 1.3])
+            with gcol1:
+                render_fairness_gauge(score)
+            with gcol2:
+                st.markdown(f"### {emoji} {label}")
+                st.markdown("<br>", unsafe_allow_html=True)
+                for check_label, pts, reason in checks:
+                    st.markdown(f"**{check_label}** — {reason}")
 
-    # ---- Financial terms grid (cyan/red per field) ----
-    with row1_mid:
-        st.markdown('<div class="glow-panel glow-cyan">', unsafe_allow_html=True)
-        st.markdown('<div class="panel-heading">💵 Financial Terms</div>', unsafe_allow_html=True)
-        tcols = st.columns(3)
-        for i, field in enumerate(NUMERIC_FIELDS):
-            with tcols[i % 3]:
-                render_term_card(field, fields.get(field), fields)
-        st.markdown('</div>', unsafe_allow_html=True)
+    with tab_terms:
+        with st.container(border=True, key="panel-terms"):
+            st.markdown('<div class="panel-heading">Financial Terms</div>', unsafe_allow_html=True)
+            st.markdown('<div class="panel-sub">Green = within typical market range · Red = worth negotiating</div>', unsafe_allow_html=True)
+            tcols = st.columns(3)
+            for i, field in enumerate(NUMERIC_FIELDS):
+                with tcols[i % 3]:
+                    render_term_card(field, fields.get(field), fields)
 
-    # ---- Vehicle & recalls (purple) ----
-    with row1_right:
-        st.markdown('<div class="glow-panel glow-purple">', unsafe_allow_html=True)
-        st.markdown('<div class="panel-heading">🚙 Vehicle & Recalls</div>', unsafe_allow_html=True)
-        manual_vin = st.text_input("VIN", value=vin or "", max_chars=17, label_visibility="collapsed",
-                                    placeholder="Enter 17-character VIN")
-        vehicle = None
-        recalls = []
-        if manual_vin and len(manual_vin) == 17:
-            try:
-                vehicle = decode_vin(manual_vin)
-                st.markdown(f"""
-                <div class="vehicle-card">
-                    <div class="vc-name">{vehicle.get('year','')} {vehicle.get('make','')} {vehicle.get('model','')}</div>
-                    <div class="vc-vin">VIN {manual_vin}</div>
-                </div>
-                """, unsafe_allow_html=True)
-                with st.spinner("Checking recalls..."):
-                    recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
-                if recalls:
-                    st.warning(f"⚠️ {len(recalls)} open recall(s) found.")
-                    for r in recalls[:3]:
-                        with st.expander(r.get("Component", "Recall")):
-                            st.write(r.get("Summary", "No details available."))
-                else:
-                    st.success("No open recalls found.")
-            except Exception:
-                st.caption("Couldn't decode that VIN.")
-        else:
-            st.caption("Enter a 17-character VIN to decode the vehicle.")
-        st.markdown('</div>', unsafe_allow_html=True)
+    with tab_vehicle:
+        with st.container(border=True, key="panel-vehicle"):
+            st.markdown('<div class="panel-heading">Vehicle & Recalls</div>', unsafe_allow_html=True)
+            manual_vin = st.text_input("VIN", value=vin or "", max_chars=17,
+                                        placeholder="Enter 17-character VIN", label_visibility="collapsed")
+            vehicle = None
+            recalls = []
+            if manual_vin and len(manual_vin) == 17:
+                try:
+                    vehicle = decode_vin(manual_vin)
+                    st.markdown(f"""
+                    <div class="vehicle-card">
+                        <div class="vc-name">{vehicle.get('year','')} {vehicle.get('make','')} {vehicle.get('model','')}</div>
+                        <div class="vc-vin">VIN {manual_vin}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    with st.spinner("Checking for open recalls..."):
+                        recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
+                    if recalls:
+                        st.warning(f"⚠️ {len(recalls)} open recall(s) found for this vehicle.")
+                        for r in recalls[:5]:
+                            with st.expander(r.get("Component", "Recall")):
+                                st.write(r.get("Summary", "No details available."))
+                                st.caption(f"Reported: {r.get('ReportReceivedDate', 'n/a')}")
+                    else:
+                        st.success("No open recalls found for this make/model/year.")
+                except Exception:
+                    st.caption("Couldn't decode that VIN.")
+            else:
+                st.caption("Enter a 17-character VIN to decode the vehicle and check recalls.")
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    row2_left, row2_right = st.columns([1.5, 1])
+    with tab_neg:
+        with st.container(border=True, key="panel-negotiation"):
+            st.markdown('<div class="panel-heading">Negotiation Suggestions</div>', unsafe_allow_html=True)
+            if negotiation_points:
+                for point in negotiation_points:
+                    st.markdown(f'<div class="neg-card">💬 {point}</div>', unsafe_allow_html=True)
+            else:
+                st.caption("No suggestions generated.")
 
-    # ---- Negotiation (yellow) ----
-    with row2_left:
-        st.markdown('<div class="glow-panel" style="border-color: rgba(245,255,0,0.3); box-shadow: 0 0 16px rgba(245,255,0,0.08);">', unsafe_allow_html=True)
-        st.markdown('<div class="panel-heading">🤝 Negotiation Suggestions</div>', unsafe_allow_html=True)
-        if negotiation_points:
-            for point in negotiation_points:
-                st.markdown(f'<div class="neg-card">💬 {point}</div>', unsafe_allow_html=True)
-        else:
-            st.caption("No suggestions generated.")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # ---- Explanations (pink) ----
-    with row2_right:
-        st.markdown('<div class="glow-panel glow-pink">', unsafe_allow_html=True)
-        st.markdown('<div class="panel-heading">📖 What Terms Mean</div>', unsafe_allow_html=True)
-        for field in FIELDS:
-            with st.expander(f"{TERM_ICONS.get(field, '•')} {field.replace('_', ' ').title()}"):
-                st.write(EXPLANATIONS.get(field, "No explanation available."))
-                val = fields.get(field)
-                if val is not None:
-                    st.caption(f"Found in contract: {val}")
-        st.markdown('</div>', unsafe_allow_html=True)
+    with tab_explain:
+        with st.container(border=True, key="panel-explain"):
+            st.markdown('<div class="panel-heading">What Each Term Means</div>', unsafe_allow_html=True)
+            for field in FIELDS:
+                with st.expander(f"{TERM_ICONS.get(field, '•')} {field.replace('_', ' ').title()}"):
+                    st.write(EXPLANATIONS.get(field, "No explanation available."))
+                    val = fields.get(field)
+                    if val is not None:
+                        st.caption(f"Found in contract: {val}")
 
     st.markdown("<br>", unsafe_allow_html=True)
     payload = {
-        "vin": manual_vin or vin,
+        "vin": (manual_vin if manual_vin else vin) or vin,
         "sla_fields": fields,
         "negotiation_suggestions": negotiation_points,
         "fairness_score": score,
