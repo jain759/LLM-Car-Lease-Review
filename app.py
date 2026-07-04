@@ -137,11 +137,25 @@ div[class*="st-key-panel-"] {
 /* Streamlit widget overrides */
 div[data-testid="stFileUploaderDropzone"] { background: var(--bg-panel); border-radius: 10px; border: 1.5px dashed rgba(0,245,212,0.4); }
 div[data-testid="stButton"] button[kind="primary"] {
-    background: linear-gradient(90deg, #00F5D4, #00C2FF); color: #07070B; border: none;
-    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
-    box-shadow: 0 0 16px rgba(0,245,212,0.35); transition: box-shadow 0.15s ease, transform 0.15s ease;
+    background: linear-gradient(90deg, #00F5D4, #00C2FF);
+    color: #07070B !important;
+    border: none;
+    font-family: 'Rajdhani', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 20px !important;
+    height: auto !important;
+    box-shadow: 0 0 16px rgba(0,245,212,0.35);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 26px rgba(0,245,212,0.6); transform: scale(1.02); }
+div[data-testid="stButton"] button[kind="primary"] p {
+    color: #07070B !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 30px rgba(0,245,212,0.7); transform: scale(1.02); }
 div[data-testid="stDownloadButton"] button {
     background: var(--bg-panel); border: 1px solid rgba(0,245,212,0.4); color: #E8E8ED; font-weight: 600;
     transition: box-shadow 0.15s ease, border-color 0.15s ease;
@@ -476,10 +490,14 @@ with hero_right:
     st.markdown("<br>", unsafe_allow_html=True)
     uploaded_file = st.file_uploader("Upload contract PDF", type=["pdf"], label_visibility="collapsed")
     analyze_clicked = False
-    if uploaded_file and API_KEY:
-        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
-    elif uploaded_file and not API_KEY:
+    if uploaded_file and not API_KEY:
         st.warning("Add your Gemini API key in the sidebar first.")
+
+if uploaded_file and API_KEY:
+    st.markdown("<br>", unsafe_allow_html=True)
+    _, btn_col, _ = st.columns([1, 2, 1])
+    with btn_col:
+        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
 
 if uploaded_file and API_KEY and analyze_clicked:
     with st.spinner("Reading PDF..."):
