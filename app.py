@@ -59,12 +59,6 @@ p, span, label, .stMarkdown { color: #C7C7D1; }
 .hero-title .accent { color: var(--neon-cyan); }
 .hero-sub { font-size: 14.5px; color: #9A9AA6; max-width: 520px; margin-top: 12px; line-height: 1.55; }
 
-.upload-heading {
-    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 15px;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--neon-cyan);
-    margin-bottom: 10px;
-}
-
 /* Tabs styled like a terminal nav */
 button[data-baseweb="tab"] {
     font-family: 'IBM Plex Mono', monospace !important;
@@ -81,7 +75,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
 div[data-baseweb="tab-highlight"] { background-color: var(--neon-cyan) !important; box-shadow: 0 0 8px rgba(0,245,212,0.6); }
 div[data-baseweb="tab-border"] { background-color: #1E1E28 !important; }
 
-/* Keyed neon panels (real Streamlit containers) */
+/* Keyed neon panels (real Streamlit containers, not floating divs) */
 div[class*="st-key-panel-"] {
     border-radius: 14px !important;
     padding: 6px 6px !important;
@@ -140,68 +134,14 @@ div[class*="st-key-panel-"] {
 .vehicle-card .vc-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 30px; text-transform: uppercase; color: #FFFFFF; }
 .vehicle-card .vc-vin { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #B9A6D6; margin-top: 6px; }
 
-/* Price estimate card */
-.price-card {
-    background: linear-gradient(135deg, #0A1A16 0%, #0F241D 100%);
-    border: 1px solid rgba(0,245,212,0.4); border-radius: 12px; padding: 22px 26px; margin-bottom: 14px;
-    box-shadow: 0 0 16px rgba(0,245,212,0.1);
-}
-.price-card .pc-range { font-family: 'IBM Plex Mono', monospace; font-size: 28px; font-weight: 600; color: #00F5D4; }
-.price-card .pc-note { font-size: 13.5px; color: #9A9AA6; margin-top: 8px; line-height: 1.5; }
-
-/* Upload dropzone - bigger and more attractive */
-div[data-testid="stFileUploaderDropzone"] {
-    background: var(--bg-panel) !important;
-    border-radius: 12px !important;
-    border: 2px dashed rgba(0,245,212,0.45) !important;
-    padding: 22px 18px !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-div[data-testid="stFileUploaderDropzone"]:hover {
-    border-color: var(--neon-cyan) !important;
-    box-shadow: 0 0 22px rgba(0,245,212,0.25) !important;
-}
-div[data-testid="stFileUploaderDropzoneInstructions"] span {
-    font-size: 15.5px !important;
-    color: #E8E8ED !important;
-}
-div[data-testid="stFileUploaderDropzoneInstructions"] small {
-    font-size: 12.5px !important;
-    color: #8C8C99 !important;
-}
-div[data-testid="stFileUploaderDropzone"] svg {
-    width: 32px !important;
-    height: 32px !important;
-    color: var(--neon-cyan) !important;
-    fill: var(--neon-cyan) !important;
-}
-div[data-testid="stFileUploaderDropzone"] button {
-    border: 1px solid rgba(0,245,212,0.4) !important;
-    color: #E8E8ED !important;
-    font-weight: 600 !important;
-}
-
 /* Streamlit widget overrides */
+div[data-testid="stFileUploaderDropzone"] { background: var(--bg-panel); border-radius: 10px; border: 1.5px dashed rgba(0,245,212,0.4); }
 div[data-testid="stButton"] button[kind="primary"] {
-    background: linear-gradient(90deg, #00F5D4, #00C2FF);
-    color: #07070B !important;
-    border: none;
-    font-family: 'Rajdhani', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 18px !important;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 14px 20px !important;
-    height: auto !important;
-    box-shadow: 0 0 16px rgba(0,245,212,0.35);
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    background: linear-gradient(90deg, #00F5D4, #00C2FF); color: #07070B; border: none;
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    box-shadow: 0 0 16px rgba(0,245,212,0.35); transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-div[data-testid="stButton"] button[kind="primary"] p {
-    color: #07070B !important;
-    font-size: 18px !important;
-    font-weight: 700 !important;
-}
-div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 30px rgba(0,245,212,0.7); transform: scale(1.02); }
+div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 26px rgba(0,245,212,0.6); transform: scale(1.02); }
 div[data-testid="stDownloadButton"] button {
     background: var(--bg-panel); border: 1px solid rgba(0,245,212,0.4); color: #E8E8ED; font-weight: 600;
     transition: box-shadow 0.15s ease, border-color 0.15s ease;
@@ -210,9 +150,6 @@ div[data-testid="stDownloadButton"] button:hover { border-color: var(--neon-cyan
 section[data-testid="stSidebar"] { background-color: #0B0B12; border-right: 1px solid #23232E; }
 details { background: #0B0B12; border: 1px solid #24242E; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; }
 summary { color: #E8E8ED !important; }
-
-/* Chat bubbles */
-div[data-testid="stChatMessage"] { background: #0B0B12; border: 1px solid #24242E; border-radius: 10px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -280,20 +217,11 @@ TERM_UNITS = {
     "mileage_overage_fee": "$/mi", "early_termination_fee": "$", "purchase_option_price": "$",
 }
 
-# Contracts can safely be much longer than 15k chars — gemini-2.5-flash has a huge
-# context window. This just guards against truly extreme edge cases.
-MAX_CONTRACT_CHARS = 100000
-
 PROMPT_TEMPLATE = """You are reading a car lease or auto loan contract. Extract the following
 fields from the contract text below. If a field is not present, use null.
 Also find a 17-character VIN if one appears, and write 2-4 short, concrete
 negotiation suggestions comparing the terms to typical market ranges
 (APR 3-7%, term 12-60 months, mileage allowance 12,000-15,000 mi/yr).
-
-Also write a "specific_explanations" object: for each numeric field that was found,
-write ONE short sentence explaining what that specific number means for THIS
-contract in plain English (e.g. "Your $3,200 termination fee equals about 8 months
-of payments if you end the lease early."). Skip fields that are null.
 
 Respond with ONLY valid JSON, no markdown fences, no commentary, in this exact shape:
 {{
@@ -313,42 +241,11 @@ Respond with ONLY valid JSON, no markdown fences, no commentary, in this exact s
     "late_fee_policy": string or null
   }},
   "vin": string or null,
-  "negotiation_points": [string, ...],
-  "specific_explanations": {{ "field_name": "sentence", ... }}
+  "negotiation_points": [string, ...]
 }}
 
 CONTRACT TEXT:
 \"\"\"{text}\"\"\"
-"""
-
-PRICE_PROMPT_TEMPLATE = """You are a car pricing expert. Based on your general knowledge of the
-used/new car market (not live data), estimate a fair price range in USD for this vehicle:
-
-Year: {year}
-Make: {make}
-Model: {model}
-
-Respond with ONLY valid JSON, no markdown fences, no commentary:
-{{
-  "price_low": number,
-  "price_high": number,
-  "summary": "one short sentence explaining the estimate and what could shift it (mileage, trim, condition)"
-}}
-"""
-
-CHAT_SYSTEM_PREAMBLE = """You are a helpful, concise assistant helping someone understand their car
-lease/loan contract. Answer only using the contract details below plus general consumer-finance
-knowledge. If something isn't in the contract, say so clearly instead of guessing specifics.
-Keep answers short (2-5 sentences) unless asked for more detail.
-
-EXTRACTED CONTRACT FIELDS:
-{fields_json}
-
-VEHICLE:
-{vehicle_json}
-
-RAW CONTRACT TEXT (may be partial):
-\"\"\"{raw_text}\"\"\"
 """
 
 
@@ -360,14 +257,16 @@ def extract_pdf_text(uploaded_file):
     return text
 
 
-def call_gemini(api_key, prompt, max_retries=3):
-    """Generic Gemini call with retry on transient server errors (e.g. 503)."""
+def analyze_with_gemini(api_key, text, max_retries=3):
     client = genai.Client(api_key=api_key)
+    prompt = PROMPT_TEMPLATE.format(text=text[:15000])
     last_error = None
     for attempt in range(1, max_retries + 1):
         try:
             response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-            return response.text.strip()
+            raw = response.text.strip()
+            raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip(), flags=re.MULTILINE)
+            return json.loads(raw)
         except Exception as e:
             last_error = e
             is_transient = "503" in str(e) or "UNAVAILABLE" in str(e) or "overloaded" in str(e).lower()
@@ -377,43 +276,6 @@ def call_gemini(api_key, prompt, max_retries=3):
                 continue
             raise last_error
     raise last_error
-
-
-def parse_json_response(raw):
-    cleaned = re.sub(r"^```json\s*|\s*```$", "", raw.strip(), flags=re.MULTILINE)
-    return json.loads(cleaned)
-
-
-def analyze_with_gemini(api_key, text):
-    truncated = text[:MAX_CONTRACT_CHARS]
-    prompt = PROMPT_TEMPLATE.format(text=truncated)
-    raw = call_gemini(api_key, prompt)
-    return parse_json_response(raw), len(text) > MAX_CONTRACT_CHARS
-
-
-def estimate_price_range(api_key, vehicle):
-    prompt = PRICE_PROMPT_TEMPLATE.format(
-        year=vehicle.get("year", "unknown"),
-        make=vehicle.get("make", "unknown"),
-        model=vehicle.get("model", "unknown"),
-    )
-    raw = call_gemini(api_key, prompt)
-    return parse_json_response(raw)
-
-
-def chat_reply(api_key, fields, vehicle, raw_text, history, user_message):
-    preamble = CHAT_SYSTEM_PREAMBLE.format(
-        fields_json=json.dumps(fields, indent=2),
-        vehicle_json=json.dumps(vehicle or {}, indent=2),
-        raw_text=raw_text[:MAX_CONTRACT_CHARS],
-    )
-    convo = ""
-    for turn in history:
-        role = "User" if turn["role"] == "user" else "Assistant"
-        convo += f"\n{role}: {turn['content']}"
-    convo += f"\nUser: {user_message}\nAssistant:"
-    full_prompt = preamble + "\n\nCONVERSATION SO FAR:" + convo
-    return call_gemini(api_key, full_prompt)
 
 
 def decode_vin(vin):
@@ -532,12 +394,12 @@ def render_term_card(field, val, fields):
     """, unsafe_allow_html=True)
 
 
-def render_fairness_gauge(score, height=280):
+def render_fairness_gauge(score):
     color = "#00F5D4" if score >= 85 else ("#F5FF00" if score >= 65 else "#FF3B5C")
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        number={'suffix': "/100", 'font': {'size': 36, 'family': 'IBM Plex Mono', 'color': '#FFFFFF'}},
+        number={'suffix': "/100", 'font': {'size': 40, 'family': 'IBM Plex Mono', 'color': '#FFFFFF'}},
         gauge={
             'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': '#4A4A55', 'tickfont': {'color': '#8C8C99'}},
             'bar': {'color': color, 'thickness': 0.28},
@@ -551,7 +413,7 @@ def render_fairness_gauge(score, height=280):
         }
     ))
     fig.update_layout(
-        height=height, margin=dict(l=20, r=20, t=30, b=10),
+        height=280, margin=dict(l=20, r=20, t=30, b=10),
         paper_bgcolor="rgba(0,0,0,0)", font={'color': '#E8E8ED'}
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -601,23 +463,6 @@ def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, re
     return buf
 
 
-def process_contract(api_key, uploaded_file):
-    """Runs the full pipeline for one uploaded contract, returns a result dict."""
-    text = extract_pdf_text(uploaded_file)
-    if not text.strip():
-        return None, "Couldn't find any text in that PDF — it may be a scanned image without OCR text."
-    result, was_truncated = analyze_with_gemini(api_key, text)
-    return {
-        "fields": result.get("fields", {}),
-        "vin": result.get("vin"),
-        "negotiation_points": result.get("negotiation_points", []),
-        "specific_explanations": result.get("specific_explanations", {}),
-        "raw_text": text,
-        "was_truncated": was_truncated,
-        "filename": uploaded_file.name,
-    }, None
-
-
 # ---------- UI ----------
 hero_left, hero_right = st.columns([2, 1])
 with hero_left:
@@ -625,57 +470,45 @@ with hero_left:
     <div class="hero-badge">LLM-POWERED CONTRACT REVIEW</div>
     <div class="hero-title">Know the deal<br><span class="accent">before you sign.</span></div>
     <div class="hero-sub">Upload a lease or loan contract PDF. An LLM reads it, scores its fairness,
-    decodes the vehicle, checks for open recalls, estimates a fair price, and tells you exactly
-    what to negotiate — plus you can chat with it about your specific contract.</div>
+    decodes the vehicle, checks for open recalls, and tells you exactly what to negotiate.</div>
     """, unsafe_allow_html=True)
 with hero_right:
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="upload-heading">📄 Upload Your Contract</div>', unsafe_allow_html=True)
-    uploaded_file = st.file_uploader(
-        "Upload contract PDF", type=["pdf"], label_visibility="collapsed", key="uploader_main"
-    )
-    if uploaded_file and not API_KEY:
+    uploaded_file = st.file_uploader("Upload contract PDF", type=["pdf"], label_visibility="collapsed")
+    analyze_clicked = False
+    if uploaded_file and API_KEY:
+        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
+    elif uploaded_file and not API_KEY:
         st.warning("Add your Gemini API key in the sidebar first.")
 
-analyze_clicked = False
-if uploaded_file and API_KEY:
-    st.markdown("<br>", unsafe_allow_html=True)
-    _, btn_col, _ = st.columns([1, 2, 1])
-    with btn_col:
-        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
-
 if uploaded_file and API_KEY and analyze_clicked:
-    with st.spinner("Reading PDF and asking Gemini to analyze it..."):
-        result, error = process_contract(API_KEY, uploaded_file)
-    if error:
-        st.error(error)
+    with st.spinner("Reading PDF..."):
+        text = extract_pdf_text(uploaded_file)
+    if not text.strip():
+        st.error("Couldn't find any text in that PDF — it may be a scanned image without OCR text.")
     else:
-        st.session_state["fields"] = result["fields"]
-        st.session_state["vin"] = result["vin"]
-        st.session_state["negotiation_points"] = result["negotiation_points"]
-        st.session_state["specific_explanations"] = result["specific_explanations"]
-        st.session_state["raw_text"] = result["raw_text"]
-        st.session_state["was_truncated"] = result["was_truncated"]
-        st.session_state["chat_history"] = []
-        st.session_state.pop("compare_result_b", None)
+        with st.spinner("Asking Gemini to read the contract..."):
+            try:
+                result = analyze_with_gemini(API_KEY, text)
+            except Exception as e:
+                st.error(f"Couldn't get a response after retrying. Try again in a moment. ({e})")
+                st.stop()
+        st.session_state["fields"] = result.get("fields", {})
+        st.session_state["vin"] = result.get("vin")
+        st.session_state["negotiation_points"] = result.get("negotiation_points", [])
+        st.session_state["raw_text"] = text
 
 if "fields" in st.session_state:
     fields = st.session_state["fields"]
     vin = st.session_state["vin"]
     negotiation_points = st.session_state["negotiation_points"]
-    specific_explanations = st.session_state.get("specific_explanations", {})
     score, checks = compute_fairness_score(fields)
     label, emoji = fairness_label(score)
 
-    if st.session_state.get("was_truncated"):
-        st.info(f"This contract was long, so only the first {MAX_CONTRACT_CHARS:,} characters were analyzed. "
-                "Key terms are usually near the top, but double check the full document for anything missed.")
-
     st.markdown("<br>", unsafe_allow_html=True)
 
-    tab_overview, tab_terms, tab_vehicle, tab_neg, tab_chat, tab_compare, tab_explain = st.tabs([
-        "📊 OVERVIEW", "💵 FINANCIAL TERMS", "🚙 VEHICLE & RECALLS",
-        "🤝 NEGOTIATION", "💬 ASK AI", "📑 COMPARE", "📖 EXPLAINED"
+    tab_overview, tab_terms, tab_vehicle, tab_neg, tab_explain = st.tabs([
+        "📊 OVERVIEW", "💵 FINANCIAL TERMS", "🚙 VEHICLE & RECALLS", "🤝 NEGOTIATION", "📖 EXPLAINED"
     ])
 
     with tab_overview:
@@ -715,27 +548,6 @@ if "fields" in st.session_state:
                         <div class="vc-vin">VIN {manual_vin}</div>
                     </div>
                     """, unsafe_allow_html=True)
-
-                    st.markdown("##### 💲 AI Estimated Fair Price Range")
-                    price_key = f"price_{manual_vin}"
-                    if price_key not in st.session_state:
-                        with st.spinner("Estimating fair price range..."):
-                            try:
-                                st.session_state[price_key] = estimate_price_range(API_KEY, vehicle)
-                            except Exception:
-                                st.session_state[price_key] = None
-                    price_info = st.session_state.get(price_key)
-                    if price_info:
-                        st.markdown(f"""
-                        <div class="price-card">
-                            <div class="pc-range">${price_info.get('price_low', 0):,.0f} – ${price_info.get('price_high', 0):,.0f}</div>
-                            <div class="pc-note">{price_info.get('summary', '')}</div>
-                            <div class="pc-note">⚠️ AI estimate based on general knowledge — not live market data.</div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    else:
-                        st.caption("Couldn't generate a price estimate right now.")
-
                     with st.spinner("Checking for open recalls..."):
                         recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
                     if recalls:
@@ -749,7 +561,7 @@ if "fields" in st.session_state:
                 except Exception:
                     st.caption("Couldn't decode that VIN.")
             else:
-                st.caption("Enter a 17-character VIN to decode the vehicle, get a price estimate, and check recalls.")
+                st.caption("Enter a 17-character VIN to decode the vehicle and check recalls.")
 
     with tab_neg:
         with st.container(border=True, key="panel-negotiation"):
@@ -760,79 +572,12 @@ if "fields" in st.session_state:
             else:
                 st.caption("No suggestions generated.")
 
-    with tab_chat:
-        with st.container(border=True, key="panel-negotiation"):
-            st.markdown('<div class="panel-heading">Ask AI About Your Contract</div>', unsafe_allow_html=True)
-            st.caption("Ask anything specific — \"what happens if I go over mileage?\", \"is this APR normal?\", etc.")
-
-            if "chat_history" not in st.session_state:
-                st.session_state["chat_history"] = []
-
-            for turn in st.session_state["chat_history"]:
-                with st.chat_message(turn["role"]):
-                    st.write(turn["content"])
-
-            user_q = st.chat_input("Ask a question about this contract...")
-            if user_q:
-                st.session_state["chat_history"].append({"role": "user", "content": user_q})
-                with st.spinner("Thinking..."):
-                    try:
-                        answer = chat_reply(
-                            API_KEY, fields,
-                            st.session_state.get("last_vehicle"),
-                            st.session_state["raw_text"],
-                            st.session_state["chat_history"][:-1],
-                            user_q,
-                        )
-                    except Exception as e:
-                        answer = f"Sorry, couldn't get a response right now. ({e})"
-                st.session_state["chat_history"].append({"role": "assistant", "content": answer})
-                st.rerun()
-
-    with tab_compare:
-        with st.container(border=True, key="panel-terms"):
-            st.markdown('<div class="panel-heading">Compare Two Contracts</div>', unsafe_allow_html=True)
-            st.caption("Upload a second contract to compare it side-by-side with the one above.")
-            second_file = st.file_uploader("Upload second contract PDF", type=["pdf"], key="uploader_compare")
-            if second_file and st.button("Analyze Second Contract", key="analyze_b"):
-                with st.spinner("Reading and analyzing second contract..."):
-                    result_b, error_b = process_contract(API_KEY, second_file)
-                if error_b:
-                    st.error(error_b)
-                else:
-                    st.session_state["compare_result_b"] = result_b
-
-            if "compare_result_b" in st.session_state:
-                fields_b = st.session_state["compare_result_b"]["fields"]
-                score_b, _ = compute_fairness_score(fields_b)
-                label_b, emoji_b = fairness_label(score_b)
-
-                ccol1, ccol2 = st.columns(2)
-                with ccol1:
-                    st.markdown(f"**Contract A** — {emoji} {label} ({score}/100)")
-                with ccol2:
-                    st.markdown(f"**Contract B: {st.session_state['compare_result_b']['filename']}** — {emoji_b} {label_b} ({score_b}/100)")
-
-                rows = []
-                for f in NUMERIC_FIELDS:
-                    val_a = fields.get(f)
-                    val_b = fields_b.get(f)
-                    rows.append({
-                        "Field": f.replace("_", " ").title(),
-                        "Contract A": val_a if val_a is not None else "—",
-                        "Contract B": val_b if val_b is not None else "—",
-                    })
-                st.table(rows)
-
     with tab_explain:
         with st.container(border=True, key="panel-explain"):
             st.markdown('<div class="panel-heading">What Each Term Means</div>', unsafe_allow_html=True)
             for field in FIELDS:
                 with st.expander(f"{TERM_ICONS.get(field, '•')} {field.replace('_', ' ').title()}"):
                     st.write(EXPLANATIONS.get(field, "No explanation available."))
-                    specific = specific_explanations.get(field)
-                    if specific:
-                        st.markdown(f"**For your contract:** {specific}")
                     val = fields.get(field)
                     if val is not None:
                         st.caption(f"Found in contract: {val}")
