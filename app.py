@@ -5,6 +5,7 @@ import time
 
 import requests
 import streamlit as st
+import plotly.graph_objects as go
 from PyPDF2 import PdfReader
 from google import genai
 from reportlab.lib.pagesizes import letter
@@ -14,6 +15,234 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
 st.set_page_config(page_title="AI Car Lease Assistant", page_icon="🚗", layout="centered")
+
+# ---------- Custom styling ----------
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+html, body, [class*="css"] { font-family: 'IBM Plex Sans', sans-serif; }
+
+/* Hero banner */
+.hero-banner {
+    background: linear-gradient(135deg, #1B1F1D 0%, #2A2F2C 100%);
+    padding: 32px 28px;
+    border-radius: 10px;
+    margin-bottom: 22px;
+    border: 1px solid #3a3f3b;
+}
+.hero-banner h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #F1F0EA;
+    font-size: 34px;
+    letter-spacing: 0.01em;
+    margin: 0 0 6px 0;
+}
+.hero-banner p {
+    color: #C9C7BE;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.5;
+}
+.hero-badge {
+    display: inline-block;
+    background: #F5B700;
+    color: #1B1F1D;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+}
+
+/* Metric cards */
+div[data-testid="stMetric"] {
+    background: #FFFFFF;
+    border: 1px solid #E3E1D8;
+    border-radius: 8px;
+    padding: 14px 16px 10px 16px;
+    box-shadow: 2px 2px 0 #EDEBE1;
+}
+div[data-testid="stMetricLabel"] {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6B7280 !important;
+}
+div[data-testid="stMetricValue"] {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+}
+
+/* Buttons */
+div[data-testid="stButton"] button, div[data-testid="stDownloadButton"] button {
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+div[data-testid="stButton"] button[kind="primary"] {
+    background-color: #1B1F1D;
+    border: none;
+}
+div[data-testid="stButton"] button[kind="primary"]:hover {
+    background-color: #2A2F2C;
+}
+
+/* Section headers */
+h2, h3 { font-family: 'Big Shoulders Display', sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
+
+/* Tabs */
+button[data-baseweb="tab"] {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* File uploader */
+div[data-testid="stFileUploaderDropzone"] {
+    border-radius: 8px;
+    border: 2px dashed #C9C6BA;
+}
+
+/* Term cards */
+.term-card {
+    background: #FFFFFF;
+    border: 1px solid #E3E1D8;
+    border-left: 4px solid #C9C6BA;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 2px 2px 0 #F3F1E9;
+}
+.term-card.good { border-left-color: #3F7D58; }
+.term-card.bad { border-left-color: #C0392B; }
+.term-card .tc-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin-bottom: 4px;
+}
+.term-card .tc-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1B1F1D;
+}
+.term-card .tc-value.empty { color: #C9C6BA; font-size: 15px; font-weight: 400; }
+
+/* Negotiation cards */
+.neg-card {
+    background: #FFFDF5;
+    border: 1px solid #F0E6C0;
+    border-left: 4px solid #F5B700;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+/* Vehicle card */
+.vehicle-card {
+    background: linear-gradient(135deg, #1B1F1D 0%, #2A2F2C 100%);
+    color: #F1F0EA;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+.vehicle-card .vc-name {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 26px;
+    text-transform: uppercase;
+}
+.vehicle-card .vc-vin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #9C9A92;
+}
+</style>
+""", unsafe_allow_html=True)
+
+TERM_ICONS = {
+    "apr_percent": "📈", "term_months": "📅", "monthly_payment": "💳",
+    "down_payment": "💰", "residual_value": "🏷️", "mileage_allowance": "🛣️",
+    "mileage_overage_fee": "⚠️", "early_termination_fee": "🚪", "purchase_option_price": "🔑",
+}
+
+TERM_UNITS = {
+    "apr_percent": "%", "term_months": " mo", "monthly_payment": "$",
+    "down_payment": "$", "residual_value": "$", "mileage_allowance": " mi/yr",
+    "mileage_overage_fee": "$/mi", "early_termination_fee": "$", "purchase_option_price": "$",
+}
+
+
+def term_flag(field, val, fields):
+    """Returns 'good', 'bad', or None (neutral) for coloring a term card."""
+    if val is None:
+        return None
+    if field == "apr_percent":
+        return "good" if val <= 7 else "bad"
+    if field == "term_months":
+        return "good" if 12 <= val <= 60 else "bad"
+    if field == "mileage_allowance":
+        return "good" if val >= 12000 else "bad"
+    if field == "mileage_overage_fee":
+        return "good" if val <= 0.25 else "bad"
+    if field == "early_termination_fee":
+        monthly = fields.get("monthly_payment")
+        if monthly:
+            return "good" if val <= monthly * 6 else "bad"
+    return None
+
+
+def render_term_card(field, val, fields):
+    flag = term_flag(field, val, fields)
+    icon = TERM_ICONS.get(field, "•")
+    label = field.replace("_", " ").title()
+    unit = TERM_UNITS.get(field, "")
+    if val is None:
+        value_html = '<div class="tc-value empty">not found</div>'
+    else:
+        prefix = "$" if unit == "$" else ""
+        suffix = "" if unit == "$" else unit
+        value_html = f'<div class="tc-value">{prefix}{val:,.2f}{suffix}</div>' if isinstance(val, float) else f'<div class="tc-value">{prefix}{val:,}{suffix}</div>'
+    css_class = f"term-card {flag}" if flag else "term-card"
+    st.markdown(f"""
+    <div class="{css_class}">
+        <div class="tc-label">{icon} {label}</div>
+        {value_html}
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def render_fairness_gauge(score):
+    color = "#3F7D58" if score >= 85 else ("#F5B700" if score >= 65 else "#C0392B")
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=score,
+        number={'suffix': "/100", 'font': {'size': 36, 'family': 'IBM Plex Mono'}},
+        gauge={
+            'axis': {'range': [0, 100], 'tickwidth': 1},
+            'bar': {'color': color, 'thickness': 0.3},
+            'bgcolor': "white",
+            'steps': [
+                {'range': [0, 65], 'color': '#FBEDEB'},
+                {'range': [65, 85], 'color': '#FEF6E0'},
+                {'range': [85, 100], 'color': '#EBF3EE'},
+            ],
+        }
+    ))
+    fig.update_layout(height=220, margin=dict(l=20, r=20, t=20, b=10))
+    st.plotly_chart(fig, use_container_width=True)
 
 # ---------- API key handling ----------
 def get_api_key():
@@ -281,12 +510,15 @@ def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, re
 
 
 # ---------- UI ----------
-st.title("🚗 AI Car Lease Assistant")
-st.write(
-    "Upload a lease or loan contract PDF. An LLM reads the text, pulls out the key "
-    "financial terms, decodes the vehicle, checks for recalls, scores the deal's "
-    "fairness, and flags anything worth negotiating."
-)
+st.markdown("""
+<div class="hero-banner">
+    <div class="hero-badge">AI Car Lease Assistant</div>
+    <h1>🚗 Know the deal before you sign</h1>
+    <p>Upload a lease or loan contract PDF. An LLM reads the text, pulls out the key
+    financial terms, decodes the vehicle, checks for recalls, scores the deal's
+    fairness, and flags anything worth negotiating.</p>
+</div>
+""", unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload contract PDF", type=["pdf"])
 
@@ -323,66 +555,77 @@ if "fields" in st.session_state:
     fields = st.session_state["fields"]
     vin = st.session_state["vin"]
     negotiation_points = st.session_state["negotiation_points"]
-
-    st.markdown("---")
-
-    # Fairness score
     score, checks = compute_fairness_score(fields)
     label, emoji = fairness_label(score)
-    st.subheader("Contract Fairness Score")
-    c1, c2 = st.columns([1, 3])
-    with c1:
-        st.metric("Score", f"{score}/100")
-    with c2:
-        st.write(f"### {emoji} {label}")
-    for check_label, pts, reason in checks:
-        st.caption(f"**{check_label}** — {reason}")
 
-    st.markdown("---")
-    st.subheader("Vehicle")
-    manual_vin = st.text_input("VIN (auto-filled if found, editable)", value=vin or "", max_chars=17)
-    vehicle = None
-    recalls = []
-    if manual_vin and len(manual_vin) == 17:
-        try:
-            vehicle = decode_vin(manual_vin)
-            st.write(f"**{vehicle.get('year','')} {vehicle.get('make','')} {vehicle.get('model','')}**")
-            with st.spinner("Checking for open recalls..."):
-                recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
-            if recalls:
-                st.warning(f"⚠️ {len(recalls)} open recall(s) found for this vehicle.")
-                for r in recalls[:5]:
-                    with st.expander(r.get("Component", "Recall")):
-                        st.write(r.get("Summary", "No details available."))
-                        st.caption(f"Reported: {r.get('ReportReceivedDate', 'n/a')}")
-            else:
-                st.success("No open recalls found for this make/model/year.")
-        except Exception:
-            st.caption("Couldn't decode that VIN.")
-    else:
-        st.caption("Enter a 17-character VIN to decode the vehicle and check recalls.")
+    st.markdown("<br>", unsafe_allow_html=True)
+    tab_overview, tab_vehicle, tab_negotiate, tab_explain = st.tabs(
+        ["📊 Overview", "🚙 Vehicle & Recalls", "🤝 Negotiation", "📖 Explained"]
+    )
 
-    st.subheader("Financial Terms")
-    cols = st.columns(3)
-    for i, field in enumerate(NUMERIC_FIELDS):
-        val = fields.get(field)
-        with cols[i % 3]:
-            st.metric(field.replace("_", " ").title(), val if val is not None else "not found")
+    # ---- Overview tab ----
+    with tab_overview:
+        gcol1, gcol2 = st.columns([1, 1])
+        with gcol1:
+            render_fairness_gauge(score)
+        with gcol2:
+            st.markdown(f"### {emoji} {label}")
+            for check_label, pts, reason in checks:
+                st.caption(f"**{check_label}** — {reason}")
 
-    st.subheader("Negotiation Suggestions")
-    if negotiation_points:
-        for point in negotiation_points:
-            st.write(f"• {point}")
-    else:
-        st.caption("No suggestions generated.")
+        st.markdown("#### Financial Terms")
+        cols = st.columns(3)
+        for i, field in enumerate(NUMERIC_FIELDS):
+            with cols[i % 3]:
+                render_term_card(field, fields.get(field), fields)
 
-    st.subheader("What Each Term Means")
-    for field in FIELDS:
-        with st.expander(field.replace("_", " ").title()):
-            st.write(EXPLANATIONS.get(field, "No explanation available."))
-            val = fields.get(field)
-            if val is not None:
-                st.caption(f"Found in contract: {val}")
+    # ---- Vehicle & Recalls tab ----
+    with tab_vehicle:
+        manual_vin = st.text_input("VIN (auto-filled if found, editable)", value=vin or "", max_chars=17)
+        vehicle = None
+        recalls = []
+        if manual_vin and len(manual_vin) == 17:
+            try:
+                vehicle = decode_vin(manual_vin)
+                st.markdown(f"""
+                <div class="vehicle-card">
+                    <div class="vc-name">{vehicle.get('year','')} {vehicle.get('make','')} {vehicle.get('model','')}</div>
+                    <div class="vc-vin">VIN {manual_vin}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                with st.spinner("Checking for open recalls..."):
+                    recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
+                if recalls:
+                    st.warning(f"⚠️ {len(recalls)} open recall(s) found for this vehicle.")
+                    for r in recalls[:5]:
+                        with st.expander(r.get("Component", "Recall")):
+                            st.write(r.get("Summary", "No details available."))
+                            st.caption(f"Reported: {r.get('ReportReceivedDate', 'n/a')}")
+                else:
+                    st.success("No open recalls found for this make/model/year.")
+            except Exception:
+                st.caption("Couldn't decode that VIN.")
+        else:
+            st.caption("Enter a 17-character VIN to decode the vehicle and check recalls.")
+
+    # ---- Negotiation tab ----
+    with tab_negotiate:
+        st.markdown("#### Negotiation Suggestions")
+        if negotiation_points:
+            for point in negotiation_points:
+                st.markdown(f'<div class="neg-card">💬 {point}</div>', unsafe_allow_html=True)
+        else:
+            st.caption("No suggestions generated.")
+
+    # ---- Explained tab ----
+    with tab_explain:
+        st.markdown("#### What Each Term Means")
+        for field in FIELDS:
+            with st.expander(f"{TERM_ICONS.get(field, '•')} {field.replace('_', ' ').title()}"):
+                st.write(EXPLANATIONS.get(field, "No explanation available."))
+                val = fields.get(field)
+                if val is not None:
+                    st.caption(f"Found in contract: {val}")
 
     st.markdown("---")
     payload = {
@@ -395,15 +638,15 @@ if "fields" in st.session_state:
     dl1, dl2 = st.columns(2)
     with dl1:
         st.download_button(
-            "Download JSON summary",
+            "⬇️ Download JSON summary",
             data=json.dumps(payload, indent=2),
             file_name="lease_contract_summary.json",
             mime="application/json",
         )
     with dl2:
-        pdf_buf = build_pdf_report(fields, manual_vin or vin, vehicle, negotiation_points, score, checks, recalls)
+        pdf_buf = build_pdf_report(fields, payload["vin"], vehicle, negotiation_points, score, checks, recalls)
         st.download_button(
-            "Download PDF report",
+            "⬇️ Download PDF report",
             data=pdf_buf,
             file_name="lease_contract_report.pdf",
             mime="application/pdf",
