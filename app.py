@@ -19,151 +19,198 @@ st.set_page_config(page_title="Lease Assistant", page_icon="⚡", layout="wide")
 # ---------- Neon dashboard styling ----------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap');
 
 :root {
-    --neon-cyan: #00F5D4;
-    --neon-pink: #FF2E9A;
-    --neon-purple: #B026FF;
-    --neon-yellow: #F5FF00;
-    --neon-red: #FF3B5C;
-    --bg-black: #07070B;
-    --bg-panel: #0F0F16;
+    --accent-purple: #8B5CF6;
+    --accent-blue: #3B82F6;
+    --accent-emerald: #34D399;
+    --accent-amber: #FBBF24;
+    --accent-red: #F87171;
+    --accent-pink: #F472B6;
+    --bg-black: #0A0A10;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.09);
 }
 
 .stApp {
-    background:
-        linear-gradient(rgba(0,245,212,0.025) 1px, transparent 1px) 0 0 / 100% 34px,
-        linear-gradient(90deg, rgba(0,245,212,0.02) 1px, transparent 1px) 0 0 / 34px 100%,
-        var(--bg-black);
-    color: #E8E8ED;
+    background: var(--bg-black);
+    color: #E5E5EA;
+    position: relative;
+    overflow-x: hidden;
 }
-.block-container { padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1500px; }
+.stApp::before {
+    content: ''; position: fixed; top: -220px; left: -180px; width: 620px; height: 620px;
+    background: radial-gradient(circle, rgba(139,92,246,0.30), transparent 70%);
+    filter: blur(90px); z-index: 0; pointer-events: none;
+}
+.stApp::after {
+    content: ''; position: fixed; bottom: -260px; right: -180px; width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(59,130,246,0.25), transparent 70%);
+    filter: blur(100px); z-index: 0; pointer-events: none;
+}
+.block-container { padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1500px; position: relative; z-index: 1; }
 #MainMenu, footer, header[data-testid="stHeader"] { visibility: hidden; height: 0; }
 
-html, body, [class*="css"] { font-family: 'IBM Plex Sans', sans-serif; color: #E8E8ED; }
-h1, h2, h3, h4 { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.03em; color: #FFFFFF; }
-p, span, label, .stMarkdown { color: #C7C7D1; }
+html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: #E5E5EA; }
+h1, h2, h3, h4 { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: #F5F5F7; }
+p, span, label, .stMarkdown { color: #A8A8B3; }
 
 /* Hero */
 .hero-badge {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--neon-cyan);
-    border: 1px solid var(--neon-cyan); border-radius: 20px; padding: 5px 14px;
-    display: inline-block; margin-bottom: 14px; box-shadow: 0 0 12px rgba(0,245,212,0.25);
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: 0.01em;
+    color: #C4B5FD; background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3);
+    border-radius: 20px; padding: 6px 16px; display: inline-block; margin-bottom: 16px;
 }
 .hero-title {
-    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 44px; line-height: 1.06;
-    text-transform: uppercase; color: #FFFFFF; text-shadow: 0 0 18px rgba(0,245,212,0.3); margin: 0;
+    font-family: 'Inter', sans-serif; font-weight: 800; font-size: 44px; line-height: 1.1;
+    letter-spacing: -0.03em; color: #F5F5F7; margin: 0;
 }
-.hero-title .accent { color: var(--neon-cyan); }
-.hero-sub { font-size: 14.5px; color: #9A9AA6; max-width: 520px; margin-top: 12px; line-height: 1.55; }
+.hero-title .accent {
+    background: linear-gradient(90deg, #A78BFA, #60A5FA);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub { font-size: 15px; color: #9A9AA6; max-width: 520px; margin-top: 14px; line-height: 1.6; }
 
-/* Tabs styled like a terminal nav */
+.upload-heading {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+    letter-spacing: 0.01em; color: #C4B5FD; margin-bottom: 10px;
+}
+
+/* Tabs — clean minimal underline */
 button[data-baseweb="tab"] {
-    font-family: 'IBM Plex Mono', monospace !important;
-    font-size: 12.5px !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
     color: #8C8C99 !important;
     padding: 10px 4px !important;
 }
-button[data-baseweb="tab"][aria-selected="true"] {
-    color: var(--neon-cyan) !important;
-    text-shadow: 0 0 10px rgba(0,245,212,0.5);
-}
-div[data-baseweb="tab-highlight"] { background-color: var(--neon-cyan) !important; box-shadow: 0 0 8px rgba(0,245,212,0.6); }
-div[data-baseweb="tab-border"] { background-color: #1E1E28 !important; }
+button[data-baseweb="tab"][aria-selected="true"] { color: #F5F5F7 !important; }
+div[data-baseweb="tab-highlight"] { background: linear-gradient(90deg, #A78BFA, #60A5FA) !important; box-shadow: none; }
+div[data-baseweb="tab-border"] { background-color: rgba(255,255,255,0.08) !important; }
 
-/* Keyed neon panels (real Streamlit containers, not floating divs) */
+/* Glass panels (real Streamlit containers) */
 div[class*="st-key-panel-"] {
-    border-radius: 14px !important;
-    padding: 6px 6px !important;
-    background: var(--bg-panel) !important;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    border-radius: 20px !important;
+    padding: 10px 8px !important;
+    background: var(--glass) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.28) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.st-key-panel-cyan { border: 1px solid rgba(0,245,212,0.35) !important; box-shadow: 0 0 18px rgba(0,245,212,0.08) !important; }
-.st-key-panel-cyan:hover { border-color: var(--neon-cyan) !important; box-shadow: 0 0 30px rgba(0,245,212,0.3) !important; }
-.st-key-panel-purple { border: 1px solid rgba(176,38,255,0.35) !important; box-shadow: 0 0 18px rgba(176,38,255,0.08) !important; }
-.st-key-panel-purple:hover { border-color: var(--neon-purple) !important; box-shadow: 0 0 30px rgba(176,38,255,0.3) !important; }
-.st-key-panel-yellow { border: 1px solid rgba(245,255,0,0.3) !important; box-shadow: 0 0 18px rgba(245,255,0,0.07) !important; }
-.st-key-panel-yellow:hover { border-color: var(--neon-yellow) !important; box-shadow: 0 0 30px rgba(245,255,0,0.25) !important; }
-.st-key-panel-pink { border: 1px solid rgba(255,46,154,0.3) !important; box-shadow: 0 0 18px rgba(255,46,154,0.07) !important; }
-.st-key-panel-pink:hover { border-color: var(--neon-pink) !important; box-shadow: 0 0 30px rgba(255,46,154,0.25) !important; }
+div[class*="st-key-panel-"]:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.18) !important;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.4) !important;
+}
 
 .panel-heading {
-    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 21px;
-    text-transform: uppercase; letter-spacing: 0.04em; margin: 10px 0 16px 4px;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 20px;
+    letter-spacing: -0.01em; margin: 10px 0 16px 4px;
 }
-.panel-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6E6E7A;
-    letter-spacing: 0.06em; text-transform: uppercase; margin: -10px 0 16px 4px; }
+.panel-sub { font-family: 'Inter', sans-serif; font-size: 12.5px; color: #7A7A87;
+    margin: -10px 0 16px 4px; }
 
-/* Term cards */
+/* Term cards — glass */
 .term-card {
-    background: #0B0B12; border: 1px solid #24242E; border-radius: 10px;
+    background: rgba(255,255,255,0.035); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.09); border-radius: 14px;
     padding: 16px 18px; margin-bottom: 14px;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.term-card:hover { transform: scale(1.03); }
-.term-card.good { border-color: rgba(0,245,212,0.4); box-shadow: 0 0 10px rgba(0,245,212,0.12); }
-.term-card.good:hover { border-color: var(--neon-cyan); box-shadow: 0 0 22px rgba(0,245,212,0.4); }
-.term-card.bad { border-color: rgba(255,59,92,0.45); box-shadow: 0 0 10px rgba(255,59,92,0.14); }
-.term-card.bad:hover { border-color: var(--neon-red); box-shadow: 0 0 22px rgba(255,59,92,0.45); }
+.term-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.2); box-shadow: 0 10px 28px rgba(0,0,0,0.3); }
+.term-card.good { border-color: rgba(52,211,153,0.4); }
+.term-card.good:hover { border-color: var(--accent-emerald); box-shadow: 0 10px 28px rgba(52,211,153,0.18); }
+.term-card.bad { border-color: rgba(248,113,113,0.4); }
+.term-card.bad:hover { border-color: var(--accent-red); box-shadow: 0 10px 28px rgba(248,113,113,0.18); }
 .term-card .tc-label {
-    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: #8C8C99; margin-bottom: 8px;
+    font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.03em;
+    text-transform: uppercase; color: #8C8C99; margin-bottom: 8px; font-weight: 500;
 }
-.term-card .tc-value { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; color: #FFFFFF; }
-.term-card .tc-value.empty { color: #4A4A55; font-size: 14px; font-weight: 400; }
+.term-card .tc-value { font-family: 'IBM Plex Mono', monospace; font-size: 23px; font-weight: 600; color: #F5F5F7; }
+.term-card .tc-value.empty { color: #55555F; font-size: 14px; font-weight: 400; }
 
 /* Negotiation cards */
 .neg-card {
-    background: #12100A; border: 1px solid rgba(245,255,0,0.3); border-radius: 10px;
-    padding: 16px 20px; margin-bottom: 14px; font-size: 15px; line-height: 1.55; color: #EDEDD8;
+    background: rgba(251,191,36,0.06); backdrop-filter: blur(14px);
+    border: 1px solid rgba(251,191,36,0.25); border-radius: 14px;
+    padding: 16px 20px; margin-bottom: 14px; font-size: 15px; line-height: 1.6; color: #EDE6D3;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.neg-card:hover { transform: scale(1.015); border-color: var(--neon-yellow); box-shadow: 0 0 18px rgba(245,255,0,0.25); }
+.neg-card:hover { transform: translateY(-2px); border-color: var(--accent-amber); box-shadow: 0 10px 26px rgba(251,191,36,0.15); }
 
 /* Vehicle card */
 .vehicle-card {
-    background: linear-gradient(135deg, #12081D 0%, #1A0F26 100%);
-    border: 1px solid rgba(176,38,255,0.4); border-radius: 12px; padding: 24px 26px; margin-bottom: 18px;
-    box-shadow: 0 0 16px rgba(176,38,255,0.12); transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background: rgba(139,92,246,0.07); backdrop-filter: blur(20px);
+    border: 1px solid rgba(139,92,246,0.3); border-radius: 18px; padding: 24px 26px; margin-bottom: 18px;
+    box-shadow: 0 8px 28px rgba(139,92,246,0.1); transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.vehicle-card:hover { transform: scale(1.01); box-shadow: 0 0 28px rgba(176,38,255,0.35); }
-.vehicle-card .vc-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 30px; text-transform: uppercase; color: #FFFFFF; }
-.vehicle-card .vc-vin { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #B9A6D6; margin-top: 6px; }
+.vehicle-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139,92,246,0.22); }
+.vehicle-card .vc-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.01em; color: #F5F5F7; }
+.vehicle-card .vc-vin { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #C4B5FD; margin-top: 6px; }
 
-/* Streamlit widget overrides */
-div[data-testid="stFileUploaderDropzone"] { background: var(--bg-panel); border-radius: 10px; border: 1.5px dashed rgba(0,245,212,0.4); }
+/* Price estimate card */
+.price-card {
+    background: rgba(52,211,153,0.06); backdrop-filter: blur(20px);
+    border: 1px solid rgba(52,211,153,0.3); border-radius: 18px; padding: 22px 26px; margin-bottom: 14px;
+    box-shadow: 0 8px 28px rgba(52,211,153,0.08);
+}
+.price-card .pc-range { font-family: 'IBM Plex Mono', monospace; font-size: 27px; font-weight: 600; color: var(--accent-emerald); }
+.price-card .pc-note { font-size: 13.5px; color: #9A9AA6; margin-top: 8px; line-height: 1.5; }
+
+/* Upload dropzone — glass */
+div[data-testid="stFileUploaderDropzone"] {
+    background: rgba(255,255,255,0.03) !important;
+    border-radius: 16px !important;
+    border: 1.5px dashed rgba(139,92,246,0.45) !important;
+    padding: 26px 18px !important;
+    backdrop-filter: blur(14px) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+div[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #A78BFA !important;
+    box-shadow: 0 8px 30px rgba(139,92,246,0.18) !important;
+}
+div[data-testid="stFileUploaderDropzoneInstructions"] span { font-size: 15.5px !important; color: #E5E5EA !important; }
+div[data-testid="stFileUploaderDropzoneInstructions"] small { font-size: 12.5px !important; color: #8C8C99 !important; }
+div[data-testid="stFileUploaderDropzone"] svg { width: 30px !important; height: 30px !important; color: #A78BFA !important; fill: #A78BFA !important; }
+div[data-testid="stFileUploaderDropzone"] button {
+    border: 1px solid rgba(139,92,246,0.4) !important; background: rgba(139,92,246,0.08) !important;
+    color: #E5E5EA !important; font-weight: 500 !important; border-radius: 10px !important;
+}
+
+/* Buttons */
 div[data-testid="stButton"] button[kind="primary"] {
-    background: linear-gradient(90deg, #00F5D4, #00C2FF);
-    color: #07070B !important;
-    border: none;
-    font-family: 'Rajdhani', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 18px !important;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 14px 20px !important;
-    height: auto !important;
-    box-shadow: 0 0 16px rgba(0,245,212,0.35);
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    background: linear-gradient(90deg, #8B5CF6, #3B82F6);
+    color: #FFFFFF !important; border: none; border-radius: 12px;
+    font-family: 'Inter', sans-serif !important; font-weight: 600 !important; font-size: 16px !important;
+    letter-spacing: 0; padding: 14px 20px !important; height: auto !important;
+    box-shadow: 0 8px 24px rgba(139,92,246,0.35);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-div[data-testid="stButton"] button[kind="primary"] p {
-    color: #07070B !important;
-    font-size: 18px !important;
-    font-weight: 700 !important;
-}
-div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 0 30px rgba(0,245,212,0.7); transform: scale(1.02); }
+div[data-testid="stButton"] button[kind="primary"] p { color: #FFFFFF !important; font-size: 16px !important; font-weight: 600 !important; }
+div[data-testid="stButton"] button[kind="primary"]:hover { box-shadow: 0 12px 32px rgba(139,92,246,0.5); transform: translateY(-2px); }
+
 div[data-testid="stDownloadButton"] button {
-    background: var(--bg-panel); border: 1px solid rgba(0,245,212,0.4); color: #E8E8ED; font-weight: 600;
-    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    background: rgba(255,255,255,0.04); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.14); color: #E5E5EA; font-weight: 500; border-radius: 10px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
-div[data-testid="stDownloadButton"] button:hover { border-color: var(--neon-cyan); box-shadow: 0 0 16px rgba(0,245,212,0.3); }
-section[data-testid="stSidebar"] { background-color: #0B0B12; border-right: 1px solid #23232E; }
-details { background: #0B0B12; border: 1px solid #24242E; border-radius: 8px; padding: 8px 14px; margin-bottom: 10px; }
-summary { color: #E8E8ED !important; }
+div[data-testid="stDownloadButton"] button:hover {
+    border-color: rgba(139,92,246,0.5); box-shadow: 0 8px 24px rgba(139,92,246,0.2); transform: translateY(-2px);
+}
+
+section[data-testid="stSidebar"] { background-color: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px); }
+details { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 8px 14px; margin-bottom: 10px; }
+summary { color: #E5E5EA !important; }
+
+/* Chat bubbles */
+div[data-testid="stChatMessage"] { background: rgba(255,255,255,0.035); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -231,11 +278,20 @@ TERM_UNITS = {
     "mileage_overage_fee": "$/mi", "early_termination_fee": "$", "purchase_option_price": "$",
 }
 
+# Contracts can safely be much longer than 15k chars — gemini-2.5-flash has a huge
+# context window. This just guards against truly extreme edge cases.
+MAX_CONTRACT_CHARS = 100000
+
 PROMPT_TEMPLATE = """You are reading a car lease or auto loan contract. Extract the following
 fields from the contract text below. If a field is not present, use null.
 Also find a 17-character VIN if one appears, and write 2-4 short, concrete
 negotiation suggestions comparing the terms to typical market ranges
 (APR 3-7%, term 12-60 months, mileage allowance 12,000-15,000 mi/yr).
+
+Also write a "specific_explanations" object: for each numeric field that was found,
+write ONE short sentence explaining what that specific number means for THIS
+contract in plain English (e.g. "Your $3,200 termination fee equals about 8 months
+of payments if you end the lease early."). Skip fields that are null.
 
 Respond with ONLY valid JSON, no markdown fences, no commentary, in this exact shape:
 {{
@@ -255,11 +311,42 @@ Respond with ONLY valid JSON, no markdown fences, no commentary, in this exact s
     "late_fee_policy": string or null
   }},
   "vin": string or null,
-  "negotiation_points": [string, ...]
+  "negotiation_points": [string, ...],
+  "specific_explanations": {{ "field_name": "sentence", ... }}
 }}
 
 CONTRACT TEXT:
 \"\"\"{text}\"\"\"
+"""
+
+PRICE_PROMPT_TEMPLATE = """You are a car pricing expert. Based on your general knowledge of the
+used/new car market (not live data), estimate a fair price range in USD for this vehicle:
+
+Year: {year}
+Make: {make}
+Model: {model}
+
+Respond with ONLY valid JSON, no markdown fences, no commentary:
+{{
+  "price_low": number,
+  "price_high": number,
+  "summary": "one short sentence explaining the estimate and what could shift it (mileage, trim, condition)"
+}}
+"""
+
+CHAT_SYSTEM_PREAMBLE = """You are a helpful, concise assistant helping someone understand their car
+lease/loan contract. Answer only using the contract details below plus general consumer-finance
+knowledge. If something isn't in the contract, say so clearly instead of guessing specifics.
+Keep answers short (2-5 sentences) unless asked for more detail.
+
+EXTRACTED CONTRACT FIELDS:
+{fields_json}
+
+VEHICLE:
+{vehicle_json}
+
+RAW CONTRACT TEXT (may be partial):
+\"\"\"{raw_text}\"\"\"
 """
 
 
@@ -271,16 +358,14 @@ def extract_pdf_text(uploaded_file):
     return text
 
 
-def analyze_with_gemini(api_key, text, max_retries=3):
+def call_gemini(api_key, prompt, max_retries=3):
+    """Generic Gemini call with retry on transient server errors (e.g. 503)."""
     client = genai.Client(api_key=api_key)
-    prompt = PROMPT_TEMPLATE.format(text=text[:15000])
     last_error = None
     for attempt in range(1, max_retries + 1):
         try:
             response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-            raw = response.text.strip()
-            raw = re.sub(r"^```json\s*|\s*```$", "", raw.strip(), flags=re.MULTILINE)
-            return json.loads(raw)
+            return response.text.strip()
         except Exception as e:
             last_error = e
             is_transient = "503" in str(e) or "UNAVAILABLE" in str(e) or "overloaded" in str(e).lower()
@@ -290,6 +375,43 @@ def analyze_with_gemini(api_key, text, max_retries=3):
                 continue
             raise last_error
     raise last_error
+
+
+def parse_json_response(raw):
+    cleaned = re.sub(r"^```json\s*|\s*```$", "", raw.strip(), flags=re.MULTILINE)
+    return json.loads(cleaned)
+
+
+def analyze_with_gemini(api_key, text):
+    truncated = text[:MAX_CONTRACT_CHARS]
+    prompt = PROMPT_TEMPLATE.format(text=truncated)
+    raw = call_gemini(api_key, prompt)
+    return parse_json_response(raw), len(text) > MAX_CONTRACT_CHARS
+
+
+def estimate_price_range(api_key, vehicle):
+    prompt = PRICE_PROMPT_TEMPLATE.format(
+        year=vehicle.get("year", "unknown"),
+        make=vehicle.get("make", "unknown"),
+        model=vehicle.get("model", "unknown"),
+    )
+    raw = call_gemini(api_key, prompt)
+    return parse_json_response(raw)
+
+
+def chat_reply(api_key, fields, vehicle, raw_text, history, user_message):
+    preamble = CHAT_SYSTEM_PREAMBLE.format(
+        fields_json=json.dumps(fields, indent=2),
+        vehicle_json=json.dumps(vehicle or {}, indent=2),
+        raw_text=raw_text[:MAX_CONTRACT_CHARS],
+    )
+    convo = ""
+    for turn in history:
+        role = "User" if turn["role"] == "user" else "Assistant"
+        convo += f"\n{role}: {turn['content']}"
+    convo += f"\nUser: {user_message}\nAssistant:"
+    full_prompt = preamble + "\n\nCONVERSATION SO FAR:" + convo
+    return call_gemini(api_key, full_prompt)
 
 
 def decode_vin(vin):
@@ -408,29 +530,29 @@ def render_term_card(field, val, fields):
     """, unsafe_allow_html=True)
 
 
-def render_fairness_gauge(score):
-    color = "#00F5D4" if score >= 85 else ("#F5FF00" if score >= 65 else "#FF3B5C")
+def render_fairness_gauge(score, height=280):
+    color = "#34D399" if score >= 85 else ("#FBBF24" if score >= 65 else "#F87171")
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        number={'suffix': "/100", 'font': {'size': 40, 'family': 'IBM Plex Mono', 'color': '#FFFFFF'}},
+        number={'suffix': "/100", 'font': {'size': 36, 'family': 'IBM Plex Mono', 'color': '#F5F5F7'}},
         gauge={
             'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': '#4A4A55', 'tickfont': {'color': '#8C8C99'}},
             'bar': {'color': color, 'thickness': 0.28},
-            'bgcolor': "#0B0B12",
+            'bgcolor': "rgba(255,255,255,0.03)",
             'borderwidth': 0,
             'steps': [
-                {'range': [0, 65], 'color': 'rgba(255,59,92,0.15)'},
-                {'range': [65, 85], 'color': 'rgba(245,255,0,0.12)'},
-                {'range': [85, 100], 'color': 'rgba(0,245,212,0.15)'},
+                {'range': [0, 65], 'color': 'rgba(248,113,113,0.12)'},
+                {'range': [65, 85], 'color': 'rgba(251,191,36,0.10)'},
+                {'range': [85, 100], 'color': 'rgba(52,211,153,0.12)'},
             ],
         }
     ))
     fig.update_layout(
-        height=280, margin=dict(l=20, r=20, t=30, b=10),
-        paper_bgcolor="rgba(0,0,0,0)", font={'color': '#E8E8ED'}
+        height=height, margin=dict(l=20, r=20, t=30, b=10),
+        paper_bgcolor="rgba(0,0,0,0)", font={'color': '#E5E5EA'}
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, recalls):
@@ -477,6 +599,23 @@ def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, re
     return buf
 
 
+def process_contract(api_key, uploaded_file):
+    """Runs the full pipeline for one uploaded contract, returns a result dict."""
+    text = extract_pdf_text(uploaded_file)
+    if not text.strip():
+        return None, "Couldn't find any text in that PDF — it may be a scanned image without OCR text."
+    result, was_truncated = analyze_with_gemini(api_key, text)
+    return {
+        "fields": result.get("fields", {}),
+        "vin": result.get("vin"),
+        "negotiation_points": result.get("negotiation_points", []),
+        "specific_explanations": result.get("specific_explanations", {}),
+        "raw_text": text,
+        "was_truncated": was_truncated,
+        "filename": uploaded_file.name,
+    }, None
+
+
 # ---------- UI ----------
 hero_left, hero_right = st.columns([2, 1])
 with hero_left:
@@ -484,49 +623,57 @@ with hero_left:
     <div class="hero-badge">LLM-POWERED CONTRACT REVIEW</div>
     <div class="hero-title">Know the deal<br><span class="accent">before you sign.</span></div>
     <div class="hero-sub">Upload a lease or loan contract PDF. An LLM reads it, scores its fairness,
-    decodes the vehicle, checks for open recalls, and tells you exactly what to negotiate.</div>
+    decodes the vehicle, checks for open recalls, estimates a fair price, and tells you exactly
+    what to negotiate — plus you can chat with it about your specific contract.</div>
     """, unsafe_allow_html=True)
 with hero_right:
     st.markdown("<br>", unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Upload contract PDF", type=["pdf"], label_visibility="collapsed")
-    analyze_clicked = False
+    st.markdown('<div class="upload-heading">📄 Upload Your Contract</div>', unsafe_allow_html=True)
+    uploaded_file = st.file_uploader(
+        "Upload contract PDF", type=["pdf"], label_visibility="collapsed", key="uploader_main"
+    )
     if uploaded_file and not API_KEY:
         st.warning("Add your Gemini API key in the sidebar first.")
 
+analyze_clicked = False
 if uploaded_file and API_KEY:
     st.markdown("<br>", unsafe_allow_html=True)
     _, btn_col, _ = st.columns([1, 2, 1])
     with btn_col:
-        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
+        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", width='stretch')
 
 if uploaded_file and API_KEY and analyze_clicked:
-    with st.spinner("Reading PDF..."):
-        text = extract_pdf_text(uploaded_file)
-    if not text.strip():
-        st.error("Couldn't find any text in that PDF — it may be a scanned image without OCR text.")
+    with st.spinner("Reading PDF and asking Gemini to analyze it..."):
+        result, error = process_contract(API_KEY, uploaded_file)
+    if error:
+        st.error(error)
     else:
-        with st.spinner("Asking Gemini to read the contract..."):
-            try:
-                result = analyze_with_gemini(API_KEY, text)
-            except Exception as e:
-                st.error(f"Couldn't get a response after retrying. Try again in a moment. ({e})")
-                st.stop()
-        st.session_state["fields"] = result.get("fields", {})
-        st.session_state["vin"] = result.get("vin")
-        st.session_state["negotiation_points"] = result.get("negotiation_points", [])
-        st.session_state["raw_text"] = text
+        st.session_state["fields"] = result["fields"]
+        st.session_state["vin"] = result["vin"]
+        st.session_state["negotiation_points"] = result["negotiation_points"]
+        st.session_state["specific_explanations"] = result["specific_explanations"]
+        st.session_state["raw_text"] = result["raw_text"]
+        st.session_state["was_truncated"] = result["was_truncated"]
+        st.session_state["chat_history"] = []
+        st.session_state.pop("compare_result_b", None)
 
 if "fields" in st.session_state:
     fields = st.session_state["fields"]
     vin = st.session_state["vin"]
     negotiation_points = st.session_state["negotiation_points"]
+    specific_explanations = st.session_state.get("specific_explanations", {})
     score, checks = compute_fairness_score(fields)
     label, emoji = fairness_label(score)
 
+    if st.session_state.get("was_truncated"):
+        st.info(f"This contract was long, so only the first {MAX_CONTRACT_CHARS:,} characters were analyzed. "
+                "Key terms are usually near the top, but double check the full document for anything missed.")
+
     st.markdown("<br>", unsafe_allow_html=True)
 
-    tab_overview, tab_terms, tab_vehicle, tab_neg, tab_explain = st.tabs([
-        "📊 OVERVIEW", "💵 FINANCIAL TERMS", "🚙 VEHICLE & RECALLS", "🤝 NEGOTIATION", "📖 EXPLAINED"
+    tab_overview, tab_terms, tab_vehicle, tab_neg, tab_chat, tab_compare, tab_explain = st.tabs([
+        "📊 OVERVIEW", "💵 FINANCIAL TERMS", "🚙 VEHICLE & RECALLS",
+        "🤝 NEGOTIATION", "💬 ASK AI", "📑 COMPARE", "📖 EXPLAINED"
     ])
 
     with tab_overview:
@@ -566,6 +713,27 @@ if "fields" in st.session_state:
                         <div class="vc-vin">VIN {manual_vin}</div>
                     </div>
                     """, unsafe_allow_html=True)
+
+                    st.markdown("##### 💲 AI Estimated Fair Price Range")
+                    price_key = f"price_{manual_vin}"
+                    if price_key not in st.session_state:
+                        with st.spinner("Estimating fair price range..."):
+                            try:
+                                st.session_state[price_key] = estimate_price_range(API_KEY, vehicle)
+                            except Exception:
+                                st.session_state[price_key] = None
+                    price_info = st.session_state.get(price_key)
+                    if price_info:
+                        st.markdown(f"""
+                        <div class="price-card">
+                            <div class="pc-range">${price_info.get('price_low', 0):,.0f} – ${price_info.get('price_high', 0):,.0f}</div>
+                            <div class="pc-note">{price_info.get('summary', '')}</div>
+                            <div class="pc-note">⚠️ AI estimate based on general knowledge — not live market data.</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.caption("Couldn't generate a price estimate right now.")
+
                     with st.spinner("Checking for open recalls..."):
                         recalls = get_recalls(vehicle.get("make"), vehicle.get("model"), vehicle.get("year"))
                     if recalls:
@@ -579,7 +747,7 @@ if "fields" in st.session_state:
                 except Exception:
                     st.caption("Couldn't decode that VIN.")
             else:
-                st.caption("Enter a 17-character VIN to decode the vehicle and check recalls.")
+                st.caption("Enter a 17-character VIN to decode the vehicle, get a price estimate, and check recalls.")
 
     with tab_neg:
         with st.container(border=True, key="panel-negotiation"):
@@ -590,12 +758,79 @@ if "fields" in st.session_state:
             else:
                 st.caption("No suggestions generated.")
 
+    with tab_chat:
+        with st.container(border=True, key="panel-chat"):
+            st.markdown('<div class="panel-heading">Ask AI About Your Contract</div>', unsafe_allow_html=True)
+            st.caption("Ask anything specific — \"what happens if I go over mileage?\", \"is this APR normal?\", etc.")
+
+            if "chat_history" not in st.session_state:
+                st.session_state["chat_history"] = []
+
+            for turn in st.session_state["chat_history"]:
+                with st.chat_message(turn["role"]):
+                    st.write(turn["content"])
+
+            user_q = st.chat_input("Ask a question about this contract...")
+            if user_q:
+                st.session_state["chat_history"].append({"role": "user", "content": user_q})
+                with st.spinner("Thinking..."):
+                    try:
+                        answer = chat_reply(
+                            API_KEY, fields,
+                            st.session_state.get("last_vehicle"),
+                            st.session_state["raw_text"],
+                            st.session_state["chat_history"][:-1],
+                            user_q,
+                        )
+                    except Exception as e:
+                        answer = f"Sorry, couldn't get a response right now. ({e})"
+                st.session_state["chat_history"].append({"role": "assistant", "content": answer})
+                st.rerun()
+
+    with tab_compare:
+        with st.container(border=True, key="panel-compare"):
+            st.markdown('<div class="panel-heading">Compare Two Contracts</div>', unsafe_allow_html=True)
+            st.caption("Upload a second contract to compare it side-by-side with the one above.")
+            second_file = st.file_uploader("Upload second contract PDF", type=["pdf"], key="uploader_compare")
+            if second_file and st.button("Analyze Second Contract", key="analyze_b"):
+                with st.spinner("Reading and analyzing second contract..."):
+                    result_b, error_b = process_contract(API_KEY, second_file)
+                if error_b:
+                    st.error(error_b)
+                else:
+                    st.session_state["compare_result_b"] = result_b
+
+            if "compare_result_b" in st.session_state:
+                fields_b = st.session_state["compare_result_b"]["fields"]
+                score_b, _ = compute_fairness_score(fields_b)
+                label_b, emoji_b = fairness_label(score_b)
+
+                ccol1, ccol2 = st.columns(2)
+                with ccol1:
+                    st.markdown(f"**Contract A** — {emoji} {label} ({score}/100)")
+                with ccol2:
+                    st.markdown(f"**Contract B: {st.session_state['compare_result_b']['filename']}** — {emoji_b} {label_b} ({score_b}/100)")
+
+                rows = []
+                for f in NUMERIC_FIELDS:
+                    val_a = fields.get(f)
+                    val_b = fields_b.get(f)
+                    rows.append({
+                        "Field": f.replace("_", " ").title(),
+                        "Contract A": val_a if val_a is not None else "—",
+                        "Contract B": val_b if val_b is not None else "—",
+                    })
+                st.table(rows)
+
     with tab_explain:
         with st.container(border=True, key="panel-explain"):
             st.markdown('<div class="panel-heading">What Each Term Means</div>', unsafe_allow_html=True)
             for field in FIELDS:
                 with st.expander(f"{TERM_ICONS.get(field, '•')} {field.replace('_', ' ').title()}"):
                     st.write(EXPLANATIONS.get(field, "No explanation available."))
+                    specific = specific_explanations.get(field)
+                    if specific:
+                        st.markdown(f"**For your contract:** {specific}")
                     val = fields.get(field)
                     if val is not None:
                         st.caption(f"Found in contract: {val}")
@@ -611,11 +846,11 @@ if "fields" in st.session_state:
     with dl1:
         st.download_button("⬇️ JSON", data=json.dumps(payload, indent=2),
                             file_name="lease_contract_summary.json", mime="application/json",
-                            use_container_width=True)
+                            width='stretch')
     with dl2:
         pdf_buf = build_pdf_report(fields, payload["vin"], vehicle, negotiation_points, score, checks, recalls)
         st.download_button("⬇️ PDF Report", data=pdf_buf, file_name="lease_contract_report.pdf",
-                            mime="application/pdf", use_container_width=True)
+                            mime="application/pdf", width='stretch')
 
     with st.expander("View extracted contract text"):
         st.text(st.session_state["raw_text"][:6000])
