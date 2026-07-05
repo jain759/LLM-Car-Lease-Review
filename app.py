@@ -552,7 +552,7 @@ def render_fairness_gauge(score, height=280):
         height=height, margin=dict(l=20, r=20, t=30, b=10),
         paper_bgcolor="rgba(0,0,0,0)", font={'color': '#E5E5EA'}
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def build_pdf_report(fields, vin, vehicle, negotiation_points, score, checks, recalls):
@@ -640,7 +640,7 @@ if uploaded_file and API_KEY:
     st.markdown("<br>", unsafe_allow_html=True)
     _, btn_col, _ = st.columns([1, 2, 1])
     with btn_col:
-        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", use_container_width=True)
+        analyze_clicked = st.button("⚡ ANALYZE WITH AI", type="primary", width='stretch')
 
 if uploaded_file and API_KEY and analyze_clicked:
     with st.spinner("Reading PDF and asking Gemini to analyze it..."):
@@ -759,7 +759,7 @@ if "fields" in st.session_state:
                 st.caption("No suggestions generated.")
 
     with tab_chat:
-        with st.container(border=True, key="panel-negotiation"):
+        with st.container(border=True, key="panel-chat"):
             st.markdown('<div class="panel-heading">Ask AI About Your Contract</div>', unsafe_allow_html=True)
             st.caption("Ask anything specific — \"what happens if I go over mileage?\", \"is this APR normal?\", etc.")
 
@@ -788,7 +788,7 @@ if "fields" in st.session_state:
                 st.rerun()
 
     with tab_compare:
-        with st.container(border=True, key="panel-terms"):
+        with st.container(border=True, key="panel-compare"):
             st.markdown('<div class="panel-heading">Compare Two Contracts</div>', unsafe_allow_html=True)
             st.caption("Upload a second contract to compare it side-by-side with the one above.")
             second_file = st.file_uploader("Upload second contract PDF", type=["pdf"], key="uploader_compare")
@@ -846,11 +846,11 @@ if "fields" in st.session_state:
     with dl1:
         st.download_button("⬇️ JSON", data=json.dumps(payload, indent=2),
                             file_name="lease_contract_summary.json", mime="application/json",
-                            use_container_width=True)
+                            width='stretch')
     with dl2:
         pdf_buf = build_pdf_report(fields, payload["vin"], vehicle, negotiation_points, score, checks, recalls)
         st.download_button("⬇️ PDF Report", data=pdf_buf, file_name="lease_contract_report.pdf",
-                            mime="application/pdf", use_container_width=True)
+                            mime="application/pdf", width='stretch')
 
     with st.expander("View extracted contract text"):
         st.text(st.session_state["raw_text"][:6000])
